@@ -1,0 +1,675 @@
+{
+    "cosmosNetworks": [
+        {
+            "bech32Prefix": "cosmos",
+            "blockExplorerUrls": ["https://www.mintscan.io/cosmos"],
+            "chainId": 1,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg"
+            ],
+            "isTestnet": false,
+            "key": "Cosmos Hub",
+            "lcdUrl": "https://cosmos-rest.publicnode.com",
+            "name": "cosmoshub-4",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uatom",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/cosmoshub/images/atom.svg",
+                "name": "ATOM",
+                "pricingProviderTokenId": "cosmos",
+                "symbol": "ATOM"
+            },
+            "networkId": 1,
+            "rpcUrls": ["https://cosmos-rpc.publicnode.com:443", "https://rpc.cosmos.directory/cosmoshub"],
+            "vanityName": "Cosmos Hub"
+        },
+        {
+            "bech32Prefix": "axelar",
+            "blockExplorerUrls": ["https://www.mintscan.io/axelar"],
+            "chainId": 2,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.svg"
+            ],
+            "isTestnet": false,
+            "key": "Axelar",
+            "lcdUrl": "https://axelar-rest.publicnode.com",
+            "name": "axelar-dojo-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uaxl",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/axelar/images/axl.svg",
+                "name": "AXL",
+                "pricingProviderTokenId": "axelar",
+                "symbol": "AXL"
+            },
+            "networkId": 2,
+            "rpcUrls": ["https://axelar-rpc.publicnode.com:443", "https://rpc.cosmos.directory/axelar"],
+            "vanityName": "Axelar"
+        },
+        {
+            "bech32Prefix": "osmo",
+            "blockExplorerUrls": ["https://www.mintscan.io/osmosis"],
+            "chainId": 3,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg"
+            ],
+            "isTestnet": false,
+            "key": "Osmosis",
+            "lcdUrl": "https://osmosis-rest.publicnode.com",
+            "name": "osmosis-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uosmo",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/osmosis/images/osmo.svg",
+                "name": "OSMO",
+                "pricingProviderTokenId": "osmosis",
+                "symbol": "OSMO"
+            },
+            "networkId": 3,
+            "rpcUrls": ["https://osmosis-rpc.publicnode.com:443", "https://rpc.cosmos.directory/osmosis"],
+            "vanityName": "Osmosis"
+        },
+        {
+            "bech32Prefix": "noble",
+            "blockExplorerUrls": ["https://www.mintscan.io/noble"],
+            "chainId": 4,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.svg"
+            ],
+            "isTestnet": false,
+            "key": "Noble",
+            "lcdUrl": "https://noble-api.polkachu.com",
+            "name": "noble-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ustake",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/noble/images/stake.svg",
+                "name": "STAKE",
+                "symbol": "STAKE"
+            },
+            "networkId": 4,
+            "rpcUrls": ["https://noble-rpc.polkachu.com", "https://noble-rpc.polkachu.com"],
+            "vanityName": "Noble"
+        },
+        {
+            "bech32Prefix": "evmos",
+            "blockExplorerUrls": ["https://www.mintscan.io/evmos"],
+            "chainId": 5,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/evmos.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/evmos.svg"
+            ],
+            "isTestnet": false,
+            "key": "Evmos",
+            "lcdUrl": "https://evmos-rest.publicnode.com",
+            "name": "evmos_9001-2",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "aevmos",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/evmos/images/evmos.svg",
+                "name": "EVMOS",
+                "pricingProviderTokenId": "evmos",
+                "symbol": "EVMOS"
+            },
+            "networkId": 5,
+            "rpcUrls": ["https://evmos-rpc.publicnode.com:443", "https://rpc.cosmos.directory/evmos"],
+            "vanityName": "Evmos"
+        },
+        {
+            "bech32Prefix": "inj",
+            "blockExplorerUrls": ["https://www.mintscan.io/injective"],
+            "chainId": 6,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/inj.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/inj.svg"
+            ],
+            "isTestnet": false,
+            "key": "Injective",
+            "lcdUrl": "https://injective-rest.publicnode.com",
+            "name": "injective-1",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "inj",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/injective/images/inj.svg",
+                "name": "INJ",
+                "pricingProviderTokenId": "injective-protocol",
+                "symbol": "INJ"
+            },
+            "networkId": 6,
+            "rpcUrls": ["https://injective-rpc.publicnode.com:443", "https://rpc.cosmos.directory/injective"],
+            "vanityName": "Injective"
+        },
+        {
+            "bech32Prefix": "celestia",
+            "blockExplorerUrls": ["https://mintscan.io/celestia"],
+            "chainId": 7,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg"
+            ],
+            "isTestnet": false,
+            "key": "Celestia",
+            "lcdUrl": "https://celestia-rest.publicnode.com",
+            "name": "celestia",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "utia",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/celestia/images/celestia.svg",
+                "name": "TIA",
+                "pricingProviderTokenId": "celestia",
+                "symbol": "TIA"
+            },
+            "networkId": 7,
+            "rpcUrls": ["https://celestia-rpc.publicnode.com:443", "https://rpc.cosmos.directory/celestia"],
+            "vanityName": "Celestia"
+        },
+        {
+            "bech32Prefix": "juno",
+            "blockExplorerUrls": ["https://www.mintscan.io/juno"],
+            "chainId": 8,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/juno.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/juno.svg"
+            ],
+            "isTestnet": false,
+            "key": "Juno",
+            "lcdUrl": "https://juno-rest.publicnode.com",
+            "name": "juno-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ujuno",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/juno/images/juno.svg",
+                "name": "JUNO",
+                "pricingProviderTokenId": "juno-network",
+                "symbol": "JUNO"
+            },
+            "networkId": 8,
+            "rpcUrls": ["https://juno-rpc.publicnode.com:443", "https://rpc.cosmos.directory/juno"],
+            "vanityName": "Juno"
+        },
+        {
+            "bech32Prefix": "dydx",
+            "blockExplorerUrls": ["https://www.mintscan.io/dydx"],
+            "chainId": 9,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/dydx/images/dydx.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/dydx/images/dydx.svg"
+            ],
+            "isTestnet": false,
+            "key": "dYdX Protocol",
+            "lcdUrl": "https://dydx-rest.publicnode.com",
+            "name": "dydx-mainnet-1",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "adydx",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/dydx/images/dydx.svg",
+                "name": "DYDX",
+                "pricingProviderTokenId": "dydx-chain",
+                "symbol": "DYDX"
+            },
+            "networkId": 9,
+            "rpcUrls": ["https://dydx-rpc.publicnode.com:443", "https://rpc.cosmos.directory/dydx"],
+            "vanityName": "dYdX Protocol"
+        },
+        {
+            "bech32Prefix": "stars",
+            "blockExplorerUrls": ["https://www.mintscan.io/stargaze/"],
+            "chainId": 10,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.svg"
+            ],
+            "isTestnet": false,
+            "key": "Stargaze",
+            "lcdUrl": "https://stargaze-rest.publicnode.com",
+            "name": "stargaze-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ustars",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/stargaze/images/stars.svg",
+                "name": "STARS",
+                "pricingProviderTokenId": "stargaze",
+                "symbol": "STARS"
+            },
+            "networkId": 10,
+            "rpcUrls": ["https://stargaze-rpc.publicnode.com:443", "https://stargaze-rpc.polkachu.com"],
+            "vanityName": "Stargaze"
+        },
+        {
+            "bech32Prefix": "akash",
+            "blockExplorerUrls": ["https://www.mintscan.io/akash"],
+            "chainId": 11,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/akash/images/akt.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/akash/images/akt.svg"
+            ],
+            "isTestnet": false,
+            "key": "Akash",
+            "lcdUrl": "https://akash-rest.publicnode.com",
+            "name": "akashnet-2",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uakt",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/akash/images/akt.svg",
+                "name": "AKT",
+                "pricingProviderTokenId": "akash-network",
+                "symbol": "AKT"
+            },
+            "networkId": 11,
+            "rpcUrls": ["https://akash-rpc.publicnode.com:443", "https://rpc.cosmos.directory/akash"],
+            "vanityName": "Akash"
+        },
+        {
+            "bech32Prefix": "dym",
+            "blockExplorerUrls": ["https://www.mintscan.io/dymension"],
+            "chainId": 12,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/dymension/images/dymension-logo.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/dymension/images/dymension-logo.svg"
+            ],
+            "isTestnet": false,
+            "key": "Dymension Hub",
+            "lcdUrl": "https://dymension-rest.publicnode.com",
+            "name": "dymension_1100-1",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "adym",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/dymension/images/dymension-logo.svg",
+                "name": "DYM",
+                "pricingProviderTokenId": "dymension",
+                "symbol": "DYM"
+            },
+            "networkId": 12,
+            "rpcUrls": ["https://dymension-rpc.publicnode.com:443", "https://rpc.cosmos.directory/dymension"],
+            "vanityName": "Dymension Hub"
+        },
+        {
+            "bech32Prefix": "terra",
+            "blockExplorerUrls": ["https://www.mintscan.io/terra"],
+            "chainId": 13,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/luna.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/luna.svg"
+            ],
+            "isTestnet": false,
+            "key": "Terra",
+            "lcdUrl": "https://terra-rest.publicnode.com",
+            "name": "phoenix-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uluna",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/terra2/images/luna.svg",
+                "name": "LUNA",
+                "pricingProviderTokenId": "terra-luna-2",
+                "symbol": "LUNA"
+            },
+            "networkId": 13,
+            "rpcUrls": ["https://terra-rpc.publicnode.com:443", "https://rpc.cosmos.directory/terra2"],
+            "vanityName": "Terra"
+        },
+        {
+            "bech32Prefix": "omniflix",
+            "blockExplorerUrls": ["https://www.mintscan.io/omniflix"],
+            "chainId": 14,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/omniflixhub/images/flix.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/omniflixhub/images/flix.svg"
+            ],
+            "isTestnet": false,
+            "key": "OmniFlix",
+            "lcdUrl": "https://omniflix-rest.publicnode.com",
+            "name": "omniflixhub-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uflix",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/omniflixhub/images/flix.svg",
+                "name": "FLIX",
+                "pricingProviderTokenId": "omniflix-network",
+                "symbol": "FLIX"
+            },
+            "networkId": 14,
+            "rpcUrls": ["https://omniflix-rpc.publicnode.com:443", "https://rpc.cosmos.directory/secretnetwork"],
+            "vanityName": "OmniFlix"
+        },
+        {
+            "bech32Prefix": "kava",
+            "blockExplorerUrls": ["https://www.mintscan.io/kava"],
+            "chainId": 15,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/kava.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/kava.svg"
+            ],
+            "isTestnet": false,
+            "key": "Kava",
+            "lcdUrl": "https://kava-rest.publicnode.com",
+            "name": "kava_2222-10",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ukava",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/kava/images/kava.svg",
+                "name": "KAVA",
+                "pricingProviderTokenId": "kava",
+                "symbol": "KAVA"
+            },
+            "networkId": 15,
+            "rpcUrls": ["https://kava-rpc.publicnode.com:443", "https://rpc.cosmos.directory/kava"],
+            "vanityName": "Kava"
+        },
+        {
+            "bech32Prefix": "core",
+            "blockExplorerUrls": ["https://www.mintscan.io/coreum"],
+            "chainId": 16,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/coreum/images/coreum.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/coreum/images/coreum.svg"
+            ],
+            "isTestnet": false,
+            "key": "Coreum",
+            "lcdUrl": "https://coreum-rest.publicnode.com",
+            "name": "coreum-mainnet-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ucore",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/coreum/images/coreum.svg",
+                "name": "COREUM",
+                "pricingProviderTokenId": "coreum",
+                "symbol": "COREUM"
+            },
+            "networkId": 16,
+            "rpcUrls": ["https://coreum-rpc.publicnode.com:443", "https://full-node.mainnet-1.coreum.dev:26657"],
+            "vanityName": "Coreum"
+        },
+        {
+            "bech32Prefix": "saga",
+            "blockExplorerUrls": ["https://www.mintscan.io/saga"],
+            "chainId": 17,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/saga/images/saga.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/saga/images/saga.svg"
+            ],
+            "isTestnet": false,
+            "key": "Saga",
+            "lcdUrl": "https://saga-rest.publicnode.com",
+            "name": "ssc-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "usaga",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/saga/images/saga.svg",
+                "name": "SAGA",
+                "pricingProviderTokenId": "saga-2",
+                "symbol": "SAGA"
+            },
+            "networkId": 17,
+            "rpcUrls": ["https://saga-rpc.publicnode.com:443", "https://saga.rpc.kjnodes.com"],
+            "vanityName": "Saga"
+        },
+        {
+            "bech32Prefix": "persistence",
+            "blockExplorerUrls": ["https://www.mintscan.io/persistence"],
+            "chainId": 18,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.svg"
+            ],
+            "isTestnet": false,
+            "key": "Persistence",
+            "lcdUrl": "https://persistence-rest.publicnode.com",
+            "name": "core-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uxprt",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/persistence/images/xprt.svg",
+                "name": "XPRT",
+                "pricingProviderTokenId": "persistence",
+                "symbol": "XPRT"
+            },
+            "networkId": 18,
+            "rpcUrls": ["https://persistence-rpc.publicnode.com:443", "https://rpc.cosmos.directory/persistence"],
+            "vanityName": "Persistence"
+        },
+        {
+            "bech32Prefix": "umee",
+            "blockExplorerUrls": ["https://www.mintscan.io/umee/"],
+            "chainId": 19,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.svg"
+            ],
+            "isTestnet": false,
+            "key": "UX Chain",
+            "lcdUrl": "https://umee-api.polkachu.com",
+            "name": "umee-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uumee",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/umee/images/umee.svg",
+                "name": "UX",
+                "pricingProviderTokenId": "umee",
+                "symbol": "UX"
+            },
+            "networkId": 19,
+            "rpcUrls": ["https://umee-rpc.polkachu.com", "https://rpc-umee-01.stakeflow.io"],
+            "vanityName": "UX Chain"
+        },
+        {
+            "bech32Prefix": "band",
+            "blockExplorerUrls": ["https://www.mintscan.io/band"],
+            "chainId": 20,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/bandchain/images/band.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/bandchain/images/band.svg"
+            ],
+            "isTestnet": false,
+            "key": "Band Protocol",
+            "lcdUrl": "https://laozi1.bandchain.org/api",
+            "name": "laozi-mainnet",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uband",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bandchain/images/band.svg",
+                "name": "BAND",
+                "pricingProviderTokenId": "band-protocol",
+                "symbol": "BAND"
+            },
+            "networkId": 20,
+            "rpcUrls": ["http://rpc.laozi1.bandchain.org", "https://rpc.cosmos.directory/bandchain"],
+            "vanityName": "Band Protocol"
+        },
+        {
+            "bech32Prefix": "chihuahua",
+            "blockExplorerUrls": ["https://mintscan.io/chihuahua"],
+            "chainId": 21,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.svg"
+            ],
+            "isTestnet": false,
+            "key": "Chihuahua",
+            "lcdUrl": "https://chihuahua-rest.publicnode.com",
+            "name": "chihuahua-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uhuahua",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/chihuahua/images/huahua.svg",
+                "name": "HUAHUA",
+                "pricingProviderTokenId": "chihuahua-token",
+                "symbol": "HUAHUA"
+            },
+            "networkId": 21,
+            "rpcUrls": ["https://chihuahua-rpc.publicnode.com:443", "https://chihuahua-rpc.polkachu.com"],
+            "vanityName": "Chihuahua"
+        },
+        {
+            "bech32Prefix": "fetch",
+            "blockExplorerUrls": ["https://www.mintscan.io/fetchai"],
+            "chainId": 22,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/fetchhub/images/fet.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/fetchhub/images/fet.svg"
+            ],
+            "isTestnet": false,
+            "key": "Fetch.ai",
+            "lcdUrl": "https://fetch-rest.publicnode.com",
+            "name": "fetchhub-4",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "afet",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/fetchhub/images/fet.svg",
+                "name": "FET",
+                "pricingProviderTokenId": "fetch-ai",
+                "symbol": "FET"
+            },
+            "networkId": 22,
+            "rpcUrls": ["https://fetch-rpc.publicnode.com:443", "https://rpc.cosmos.directory/fetchhub"],
+            "vanityName": "Fetch.ai"
+        },
+        {
+            "bech32Prefix": "pasg",
+            "blockExplorerUrls": ["https://www.mintscan.io/passage"],
+            "chainId": 23,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/passage/images/pasg.png",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/passage/images/pasg.png"
+            ],
+            "isTestnet": false,
+            "key": "Passage",
+            "lcdUrl": "https://passage-rest.publicnode.com",
+            "name": "passage-2",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "upasg",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/passage/images/pasg.png",
+                "name": "PASG",
+                "pricingProviderTokenId": "passage",
+                "symbol": "PASG"
+            },
+            "networkId": 23,
+            "rpcUrls": ["https://passage-rpc.publicnode.com:443", "https://passage-rpc.polkachu.com"],
+            "vanityName": "Passage"
+        },
+        {
+            "bech32Prefix": "human",
+            "blockExplorerUrls": ["https://www.mintscan.io/humans"],
+            "chainId": 24,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/humans/images/heart-dark-mode.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/humans/images/heart-dark-mode.svg"
+            ],
+            "isTestnet": false,
+            "key": "Humans.ai",
+            "lcdUrl": "https://humans.api.kjnodes.com",
+            "name": "humans_1089-1",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "aheart",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/humans/images/heart-dark-mode.svg",
+                "name": "HEART",
+                "pricingProviderTokenId": "humans-ai",
+                "symbol": "HEART"
+            },
+            "networkId": 24,
+            "rpcUrls": ["https://humans.rpc.kjnodes.com", "https://rpc.cosmos.directory/humans"],
+            "vanityName": "Humans.ai"
+        },
+        {
+            "bech32Prefix": "somm",
+            "blockExplorerUrls": ["https://www.mintscan.io/sommelier"],
+            "chainId": 25,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/sommelier/images/somm.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/sommelier/images/somm.svg"
+            ],
+            "isTestnet": false,
+            "key": "Sommelier",
+            "lcdUrl": "https://sommelier-api.polkachu.com",
+            "name": "sommelier-3",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "usomm",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/sommelier/images/somm.svg",
+                "name": "SOMM",
+                "pricingProviderTokenId": "sommelier",
+                "symbol": "SOMM"
+            },
+            "networkId": 25,
+            "rpcUrls": ["https://sommelier-rpc.polkachu.com", "https://rpc.cosmos.directory/sommelier"],
+            "vanityName": "Sommelier"
+        },
+        {
+            "bech32Prefix": "xpla",
+            "blockExplorerUrls": ["https://www.mintscan.io/xpla"],
+            "chainId": 26,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/xpla/images/xpla.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/xpla/images/xpla.svg"
+            ],
+            "isTestnet": false,
+            "key": "XPLA",
+            "lcdUrl": "https://xpla-rest.publicnode.com",
+            "name": "dimension_37-1",
+            "nativeCurrency": {
+                "decimals": 18,
+                "denom": "axpla",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/xpla/images/xpla.svg",
+                "name": "XPLA",
+                "pricingProviderTokenId": "xpla",
+                "symbol": "XPLA"
+            },
+            "networkId": 26,
+            "rpcUrls": ["https://xpla-rpc.publicnode.com:443", "https://dimension-rpc.xpla.dev"],
+            "vanityName": "XPLA"
+        },
+        {
+            "bech32Prefix": "bitsong",
+            "blockExplorerUrls": ["https://www.mintscan.io/bitsong"],
+            "chainId": 27,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/btsg.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/btsg.svg"
+            ],
+            "isTestnet": false,
+            "key": "BitSong",
+            "lcdUrl": "https://rest-bitsong.architectnodes.com",
+            "name": "bitsong-2b",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "ubtsg",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/bitsong/images/btsg.svg",
+                "name": "BTSG",
+                "pricingProviderTokenId": "bitsong",
+                "symbol": "BTSG"
+            },
+            "networkId": 27,
+            "rpcUrls": ["https://rpc-bitsong.architectnodes.com", "https://rpc.cosmos.directory/bitsong"],
+            "vanityName": "BitSong"
+        },
+        {
+            "bech32Prefix": "iaa",
+            "blockExplorerUrls": ["https://www.mintscan.io/iris"],
+            "chainId": 28,
+            "iconUrls": [
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/irisnet/images/iris.svg",
+                "https://raw.githubusercontent.com/cosmos/chain-registry/master/irisnet/images/iris.svg"
+            ],
+            "isTestnet": false,
+            "key": "IRISnet",
+            "lcdUrl": "https://iris-rest.publicnode.com",
+            "name": "irishub-1",
+            "nativeCurrency": {
+                "decimals": 6,
+                "denom": "uiris",
+                "iconUrl": "https://raw.githubusercontent.com/cosmos/chain-registry/master/irisnet/images/iris.svg",
+                "name": "IRIS",
+                "pricingProviderTokenId": "iris-network",
+                "symbol": "IRIS"
+            },
+            "networkId": 28,
+            "rpcUrls": ["https://iris-rpc.publicnode.com:443", "https://rpc.cosmos.directory/irisnet"],
+            "vanityName": "IRISnet"
+        }
+    ]
+}
