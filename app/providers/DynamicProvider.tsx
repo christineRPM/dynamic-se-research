@@ -46,7 +46,7 @@ class DynamicErrorBoundary extends Component<
 
 export function DynamicProvider({ children }: { children: React.ReactNode }) {
   // Environment configuration
-  const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID || '423ea0e4-81a6-4fe2-ae90-5bd1ea3dfccd';
+  const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID || '';
   
   // Detect in-app browsers (simplified version matching production logic)
   const [isInApp, setIsInApp] = useState(false);
