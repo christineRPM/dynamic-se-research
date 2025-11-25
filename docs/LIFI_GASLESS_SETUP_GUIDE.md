@@ -1,6 +1,6 @@
 # Li.Fi Gasless Swaps with Dynamic + ZeroDev - Complete Setup Guide
 
-## 🎯 Overview
+## Overview
 
 This guide explains how to set up gasless token swaps using:
 - **Dynamic SDK** - Wallet connection & management
@@ -11,7 +11,7 @@ This guide explains how to set up gasless token swaps using:
 
 ---
 
-## 📦 Part 1: Dynamic Provider Setup
+## Part 1: Dynamic Provider Setup
 
 ### Step 1: Install Dependencies
 
@@ -37,14 +37,7 @@ import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
 import { ZeroDevSmartWalletConnectorsWithConfig } from '@dynamic-labs/ethereum-aa';
 
 export function DynamicProvider({ children }: { children: React.ReactNode }) {
-  // 1. Get your Dynamic Environment ID
   const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID || '';
-  
-  // 2. Get your ZeroDev Project ID (from ZeroDev dashboard)
-  const zeroDevProjectId = process.env.NEXT_PUBLIC_ZERODEV_PROJECT_ID || '';
-  
-  // 3. Get your Pimlico API Key
-  const pimlicoApiKey = process.env.NEXT_PUBLIC_PIMLICO_API_KEY || '';
 
   return (
     <DynamicContextProvider
@@ -52,14 +45,11 @@ export function DynamicProvider({ children }: { children: React.ReactNode }) {
       settings={{
         environmentId: environmentId,
         
-        // 🔑 KEY: Add ZeroDev connector alongside Ethereum connectors
+        // KEY: Add ZeroDev connector alongside Ethereum connectors
         walletConnectors: [
           EthereumWalletConnectors,
           ZeroDevSmartWalletConnectorsWithConfig({
             bundlerProvider: 'PIMLICO' as any,
-            // Optional: Specify RPC URLs
-            // bundlerRpc: `https://rpc.zerodev.app/api/v2/bundler/${zeroDevProjectId}?bundlerProvider=PIMLICO`,
-            // paymasterRpc: `https://rpc.zerodev.app/api/v2/paymaster/${zeroDevProjectId}`,
           }),
         ],
       }}
@@ -77,12 +67,6 @@ export function DynamicProvider({ children }: { children: React.ReactNode }) {
 ```bash
 # Dynamic Configuration
 NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID=your_dynamic_env_id
-
-# ZeroDev Configuration (get from dashboard.zerodev.app)
-NEXT_PUBLIC_ZERODEV_PROJECT_ID=your_zerodev_project_id
-
-# Pimlico API Key (get from dashboard.pimlico.io)
-NEXT_PUBLIC_PIMLICO_API_KEY=your_pimlico_api_key
 ```
 
 ### Step 4: Wrap Your App
@@ -107,7 +91,7 @@ export default function RootLayout({ children }) {
 
 ---
 
-## 🔄 Part 2: Li.Fi Gasless Swap Component
+## Part 2: Li.Fi Gasless Swap Component
 
 ### Architecture Overview
 
@@ -126,9 +110,9 @@ Batch: [Approval (if needed), Swap]
     ↓
 kernelClient.sendUserOperation() - Execute with gas sponsorship
     ↓
-Pimlico Paymaster pays gas ✨
+Pimlico Paymaster pays gas
     ↓
-Transaction confirmed on-chain ✅
+Transaction confirmed on-chain
 ```
 
 ### Step 1: Component Imports
@@ -144,14 +128,14 @@ import { isZeroDevConnector } from '@dynamic-labs/ethereum-aa';
 import { getRoutes, getStepTransaction } from '@lifi/sdk';
 import { parseUnits, formatUnits, encodeFunctionData } from 'viem';
 
-// ⚠️ NO WAGMI IMPORTS!
+// NO WAGMI IMPORTS!
 ```
 
 **Key Points:**
-- ✅ Use `useDynamicContext()` from Dynamic (not Wagmi's `useAccount()`)
-- ✅ Use `isZeroDevConnector()` to check for AA support
-- ✅ Use Li.Fi SDK functions directly (`getRoutes`, `getStepTransaction`)
-- ✅ Use `viem` utilities for encoding/parsing
+- Use `useDynamicContext()` from Dynamic (not Wagmi's `useAccount()`)
+- Use `isZeroDevConnector()` to check for AA support
+- Use Li.Fi SDK functions directly (`getRoutes`, `getStepTransaction`)
+- Use `viem` utilities for encoding/parsing
 
 ### Step 2: Token Configuration
 
@@ -175,9 +159,9 @@ const MAINNET_TOKENS = [
 ```
 
 **Important:**
-- ✅ Use mainnet chains (Li.Fi doesn't support testnets)
-- ✅ Include correct decimals for each token
-- ✅ Use `0x0000...` for native tokens (ETH, MATIC, etc.)
+- Use mainnet chains (Li.Fi doesn't support testnets)
+- Include correct decimals for each token
+- Use `0x0000...` for native tokens (ETH, MATIC, etc.)
 
 ### Step 3: Get Wallet from Dynamic
 
@@ -198,7 +182,7 @@ export const LiFiSwapTest: FC = () => {
   
   // Check if wallet supports AA
   if (!isZeroDevConnector(connector)) {
-    return <div>❌ Gas sponsorship requires embedded wallet</div>;
+    return <div>Gas sponsorship requires embedded wallet</div>;
   }
   
   // ... rest of component
@@ -271,17 +255,17 @@ useEffect(() => {
 ```
 
 **Key Points:**
-- ✅ Debounce quote fetching (500ms)
-- ✅ Use `connector.getAddress()` to get wallet address
-- ✅ Call `getRoutes()` directly from Li.Fi SDK
-- ✅ Parse amounts with correct decimals
+- Debounce quote fetching (500ms)
+- Use `connector.getAddress()` to get wallet address
+- Call `getRoutes()` directly from Li.Fi SDK
+- Parse amounts with correct decimals
 
 ### Step 5: Execute Gasless Swap
 
 ```typescript
 const executeGaslessSwap = async () => {
   if (!primaryWallet) {
-    setResult('❌ No wallet connected');
+    setResult('No wallet connected');
     return;
   }
 
@@ -293,7 +277,7 @@ const executeGaslessSwap = async () => {
   }
 
   setLoading(true);
-  setResult('🔄 Getting best route...');
+  setResult('Getting best route...');
 
   try {
     // Step 1: Get wallet address
@@ -327,7 +311,7 @@ const executeGaslessSwap = async () => {
     const bestRoute = routes.routes[0];
     const step = bestRoute.steps[0];
 
-    setResult('🔄 Getting transaction data...');
+    setResult('Getting transaction data...');
 
     // Step 3: Get transaction data from Li.Fi
     const stepTransaction = await getStepTransaction(step);
@@ -339,19 +323,19 @@ const executeGaslessSwap = async () => {
     const txData = stepTransaction.transactionRequest;
 
     // Step 4: Load kernel client
-    setResult('🔄 Loading kernel client...');
+    setResult('Loading kernel client...');
     await connector.getNetwork(); // Ensure kernel is loaded
     
     // Step 5: Get kernel client with gas sponsorship
     const kernelClient = connector.getAccountAbstractionProvider({
-      withSponsorship: true, // ✨ Enable gas sponsorship
+      withSponsorship: true, // Enable gas sponsorship
     });
 
     if (!kernelClient) {
       throw new Error('Failed to get kernel client');
     }
 
-    setResult('🔄 Preparing transaction...');
+    setResult('Preparing transaction...');
 
     // Step 6: Build transaction calls array
     const calls: Array<{
@@ -364,7 +348,7 @@ const executeGaslessSwap = async () => {
     if (fromToken !== '0x0000000000000000000000000000000000000000' 
         && step.estimate.approvalAddress) {
       
-      setResult('🔄 Batching approval + swap...');
+      setResult('Batching approval + swap...');
       
       // ERC20 approve function
       const approvalData = encodeFunctionData({
@@ -399,7 +383,7 @@ const executeGaslessSwap = async () => {
       data: txData.data as `0x${string}`,
     });
 
-    setResult('🔄 Executing gasless swap...');
+    setResult('Executing gasless swap...');
 
     // Step 7: Execute through kernel client (gas sponsored!)
     const userOpHash = await kernelClient.sendUserOperation({
@@ -407,9 +391,9 @@ const executeGaslessSwap = async () => {
     });
 
     setResult(
-      `✅ Swap initiated!\n\n` +
-      `📝 User Operation Hash:\n${userOpHash}\n\n` +
-      `⏳ Waiting for confirmation...`
+      `Swap initiated!\n\n` +
+      `User Operation Hash:\n${userOpHash}\n\n` +
+      `Waiting for confirmation...`
     );
 
     // Step 8: Wait for confirmation
@@ -421,18 +405,18 @@ const executeGaslessSwap = async () => {
     const explorerUrl = `https://etherscan.io/tx/${txHash}`;
 
     setResult(
-      `🎉 Swap completed!\n\n` +
-      `📝 User Op Hash:\n${userOpHash}\n\n` +
-      `🧾 Transaction Hash:\n${txHash}\n\n` +
-      `🔗 View on Explorer:\n${explorerUrl}\n\n` +
-      `⛽ Gas Used: ${receipt.receipt.gasUsed.toString()}\n` +
-      `✨ Gas was sponsored by Pimlico!`
+      `Swap completed!\n\n` +
+      `User Op Hash:\n${userOpHash}\n\n` +
+      `Transaction Hash:\n${txHash}\n\n` +
+      `View on Explorer:\n${explorerUrl}\n\n` +
+      `Gas Used: ${receipt.receipt.gasUsed.toString()}\n` +
+      `Gas was sponsored by Pimlico!`
     );
 
   } catch (error) {
     console.error('Error executing swap:', error);
     const errorMessage = error instanceof Error ? error.message : 'Unknown error';
-    setResult(`❌ Error: ${errorMessage}`);
+    setResult(`Error: ${errorMessage}`);
   } finally {
     setLoading(false);
   }
@@ -441,7 +425,7 @@ const executeGaslessSwap = async () => {
 
 ---
 
-## 🔑 Key Integration Points Explained
+## Key Integration Points Explained
 
 ### 1. Dynamic → ZeroDev Connection
 
@@ -503,7 +487,7 @@ ZeroDev bundler receives user operation
     ↓
 Pimlico paymaster checks gas policy
     ↓
-Paymaster signs to sponsor gas ✨
+Paymaster signs to sponsor gas
     ↓
 Bundler submits to chain with paymaster signature
     ↓
@@ -514,7 +498,7 @@ User gets swap result (paid zero gas fees!)
 
 ---
 
-## ⚠️ Critical Requirements
+## Critical Requirements
 
 ### 1. Embedded Wallet ONLY
 
@@ -544,21 +528,21 @@ const routeRequest = {
 ### 3. ZeroDev Dashboard Configuration
 
 Required settings in ZeroDev dashboard:
-- ✅ Project created for target chain (e.g., Ethereum mainnet)
-- ✅ Gas policy configured (which operations to sponsor)
-- ✅ Paymaster funded (deposit ETH/tokens for gas)
-- ✅ Project ID added to Dynamic dashboard
+- Project created for target chain (e.g., Ethereum mainnet)
+- Gas policy configured (which operations to sponsor)
+- Paymaster funded (deposit ETH/tokens for gas)
+- Project ID added to Dynamic dashboard
 
 ### 4. Dynamic Dashboard Configuration
 
 Required settings in Dynamic dashboard:
-- ✅ Chain enabled (Settings → Chains & Networks)
-- ✅ ZeroDev project ID added for that chain
-- ✅ Embedded wallets enabled
+- Chain enabled (Settings → Chains & Networks)
+- ZeroDev project ID added for that chain
+- Embedded wallets enabled
 
 ---
 
-## 🧪 Testing Checklist
+## Testing Checklist
 
 ### Pre-flight Checks
 - [ ] Dynamic Environment ID configured
@@ -595,23 +579,23 @@ Expected: Batched (approval + swap), gas sponsored
 
 ---
 
-## 🎯 Comparison: Your Setup vs Dynamic Docs
+## Comparison: Your Setup vs Dynamic Docs
 
 | Feature | Dynamic's Li.Fi Docs | Your Implementation |
 |---------|---------------------|---------------------|
-| **Wagmi Config** | ✅ Required (`createConfig`) | ❌ Not needed |
-| **WagmiProvider** | ✅ Wrap app | ❌ Not used |
-| **Li.Fi Widget** | ✅ Use widget components | ❌ Direct SDK calls |
-| **Gas Sponsorship** | ❌ Not supported | ✅ **Full support** |
-| **Transaction Batching** | ❌ Separate approvals | ✅ **Batched** |
-| **Wallet Types** | ✅ All wallets | ⚠️ Embedded only |
-| **Networks** | ✅ All chains | ⚠️ Mainnet only |
+| **Wagmi Config** | Required (`createConfig`) | Not needed |
+| **WagmiProvider** | Wrap app | Not used |
+| **Li.Fi Widget** | Use widget components | Direct SDK calls |
+| **Gas Sponsorship** | Not supported | **Full support** |
+| **Transaction Batching** | Separate approvals | **Batched** |
+| **Wallet Types** | All wallets | Embedded only |
+| **Networks** | All chains | Mainnet only |
 
 **Your implementation is MORE advanced** because it supports gas sponsorship!
 
 ---
 
-## 🚨 Common Issues & Solutions
+## Common Issues & Solutions
 
 ### Issue 1: `wallet_getCallsStatus` Error
 
@@ -647,7 +631,7 @@ if (!isZeroDevConnector(connector)) {
 
 ---
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [Dynamic Documentation](https://docs.dynamic.xyz/)
 - [ZeroDev Documentation](https://docs.zerodev.app/)
@@ -656,16 +640,16 @@ if (!isZeroDevConnector(connector)) {
 
 ---
 
-## ✅ Success Criteria
+## Success Criteria
 
 When everything is working:
-1. ✅ User logs in with email (embedded wallet created)
-2. ✅ Selects tokens (ETH ↔ USDC)
-3. ✅ Sees real-time quote
-4. ✅ Clicks execute
-5. ✅ Approval + swap batched in single signature
-6. ✅ Transaction completes with ZERO gas fees paid
-7. ✅ Tokens swapped successfully
+1. User logs in with email (embedded wallet created)
+2. Selects tokens (ETH to USDC)
+3. Sees real-time quote
+4. Clicks execute
+5. Approval + swap batched in single signature
+6. Transaction completes with ZERO gas fees paid
+7. Tokens swapped successfully
 
-**Total user experience:** One click, one signature, zero gas fees! 🎉
+**Total user experience:** One click, one signature, zero gas fees!
 
