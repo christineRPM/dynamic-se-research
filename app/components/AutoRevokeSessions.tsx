@@ -22,7 +22,7 @@ interface UserData {
   user: {
     id: string;
     sessions: Session[];
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -381,7 +381,7 @@ export const AutoRevokeSessions: FC = () => {
             <p className="text-xs text-white font-mono break-all">{userId}</p>
             {currentSessionStatus === 'unknown' && (
               <p className="text-xs text-yellow-400 mt-2">
-                💡 Click "Start Auto-Revoke Process" to check session status
+                💡 Click &quot;Start Auto-Revoke Process&quot; to check session status
               </p>
             )}
           </div>
