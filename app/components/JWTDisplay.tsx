@@ -13,7 +13,7 @@ interface UserData {
       ipAddress?: string;
       userAgent?: string;
     }>;
-    [key: string]: any;
+    [key: string]: unknown;
   };
 }
 
@@ -300,16 +300,16 @@ export const JWTDisplay: FC = () => {
           <h4 className="text-sm font-semibold text-blue-200 mb-2">📖 How JWT is Obtained</h4>
           <div className="space-y-2 text-xs text-blue-100">
             <p>
-              <strong>1. Client-Side:</strong> The JWT is obtained using Dynamic SDK's <code className="bg-blue-950 px-1 rounded">getAuthToken()</code> function.
+              <strong>1. Client-Side:</strong> The JWT is obtained using Dynamic SDK&apos;s <code className="bg-blue-950 px-1 rounded">getAuthToken()</code> function.
             </p>
             <p>
-              <strong>2. Source:</strong> The SDK retrieves the JWT from Dynamic's authentication service after successful wallet connection or social login.
+              <strong>2. Source:</strong> The SDK retrieves the JWT from Dynamic&apos;s authentication service after successful wallet connection or social login.
             </p>
             <p>
-              <strong>3. Storage:</strong> The JWT is stored in the browser's memory and can also be found in localStorage under <code className="bg-blue-950 px-1 rounded">dynamic_authentication_token</code>.
+              <strong>3. Storage:</strong> The JWT is stored in the browser&apos;s memory and can also be found in localStorage under <code className="bg-blue-950 px-1 rounded">dynamic_authentication_token</code>.
             </p>
             <p>
-              <strong>4. Contents:</strong> The JWT contains user information, session ID, environment ID, and expiration time. It's signed by Dynamic's servers and can be verified using their JWKS endpoint.
+              <strong>4. Contents:</strong> The JWT contains user information, session ID, environment ID, and expiration time. It&apos;s signed by Dynamic&apos;s servers and can be verified using their JWKS endpoint.
             </p>
             <p>
               <strong>5. Usage:</strong> This JWT is used to authenticate API requests and identify the current user session.

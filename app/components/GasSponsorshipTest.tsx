@@ -167,7 +167,7 @@ export const GasSponsorshipTest: FC = () => {
               💡 <strong>Gas Sponsorship Enabled:</strong> Gas fees are paid by ZeroDev/Pimlico paymaster.
             </p>
             <p className="text-xs text-yellow-200">
-              ⚠️ <strong>Note:</strong> Gas sponsorship covers GAS FEES only, not the transaction value. To test without needing ETH, use amount "0".
+              ⚠️ <strong>Note:</strong> Gas sponsorship covers GAS FEES only, not the transaction value. To test without needing ETH, use amount &quot;0&quot;.
             </p>
           </div>
 
@@ -187,7 +187,7 @@ export const GasSponsorshipTest: FC = () => {
             </div>
 
             <div>
-              <label className="text-xs text-gray-400 block mb-1">Amount (ETH) - Use "0" to test gas sponsorship only</label>
+              <label className="text-xs text-gray-400 block mb-1">Amount (ETH) - Use &quot;0&quot; to test gas sponsorship only</label>
               <input
                 type="text"
                 value={amount}
@@ -196,7 +196,7 @@ export const GasSponsorshipTest: FC = () => {
                 placeholder="0"
               />
               <p className="text-xs text-gray-500 mt-1">
-                💡 Set to "0" to test without needing any ETH in wallet
+                💡 Set to &quot;0&quot; to test without needing any ETH in wallet
               </p>
             </div>
 
