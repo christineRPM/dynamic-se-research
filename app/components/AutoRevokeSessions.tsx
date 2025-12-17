@@ -33,8 +33,10 @@ export const AutoRevokeSessions: FC = () => {
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [isRunning, setIsRunning] = useState(false);
   const [userData, setUserData] = useState<UserData | null>(null);
-  const [revokedCount, setRevokedCount] = useState(0);
+  const [revokedCount, setRevokedCount] = useState(0); // Sessions revoked in current run
   const [totalSessions, setTotalSessions] = useState(0);
+  const [totalRevokedSessions, setTotalRevokedSessions] = useState(0); // Total revoked sessions from user data
+  const [currentSessionStatus, setCurrentSessionStatus] = useState<'active' | 'revoked' | 'unknown'>('unknown');
 
   useEffect(() => {
     // Get JWT from Dynamic SDK
@@ -50,6 +52,45 @@ export const AutoRevokeSessions: FC = () => {
       setUserId(uid || null);
     }
   }, []);
+
+  // Pre-check: Automatically check session status when sessionId and userId are available
+  useEffect(() => {
+    const checkSessionStatus = async () => {
+      if (!sessionId || !userId || isRunning) return;
+
+      try {
+        const userResponse = await fetch(`/api/get-user?userId=${userId}`);
+        const userResponseText = await userResponse.text();
+
+        if (!userResponse.ok) {
+          // Silently fail for pre-check - don't show errors
+          return;
+        }
+
+        const userDataResponse: UserData = JSON.parse(userResponseText);
+        const allSessions = userDataResponse.user?.sessions || [];
+        
+        // Check current session status
+        const currentSession = allSessions.find(s => s.id === sessionId);
+        if (currentSession) {
+          const isRevoked = currentSession.revokedAt !== null;
+          setCurrentSessionStatus(isRevoked ? 'revoked' : 'active');
+          setUserData(userDataResponse);
+          setTotalSessions(allSessions.length);
+          // Calculate total revoked sessions
+          const revokedSessions = allSessions.filter(s => s.revokedAt !== null);
+          setTotalRevokedSessions(revokedSessions.length);
+        } else {
+          setCurrentSessionStatus('unknown');
+        }
+      } catch (error) {
+        // Silently fail for pre-check
+        console.error('Pre-check session status failed:', error);
+      }
+    };
+
+    checkSessionStatus();
+  }, [sessionId, userId, isRunning]);
 
   const decodeJWT = (token: string) => {
     try {
@@ -78,7 +119,9 @@ export const AutoRevokeSessions: FC = () => {
     setLogs([]);
     setRevokedCount(0);
     setTotalSessions(0);
+    setTotalRevokedSessions(0);
     setUserData(null);
+    setCurrentSessionStatus('unknown');
   };
 
   const revokeSession = async (sessionIdToRevoke: string): Promise<boolean> => {
@@ -171,11 +214,25 @@ export const AutoRevokeSessions: FC = () => {
       const allSessions = userDataResponse.user?.sessions || [];
       setTotalSessions(allSessions.length);
       
+      // Check current session status
+      const currentSession = allSessions.find(s => s.id === sessionId);
+      if (currentSession) {
+        const isRevoked = currentSession.revokedAt !== null;
+        setCurrentSessionStatus(isRevoked ? 'revoked' : 'active');
+        addLog(isRevoked ? 'warning' : 'success', `Current session status: ${isRevoked ? 'REVOKED ⚠️' : 'ACTIVE ✅'}`);
+      } else {
+        setCurrentSessionStatus('unknown');
+        addLog('warning', 'Current session not found in user sessions list');
+      }
+      
       addLog('success', `✅ Found ${allSessions.length} total session(s)`);
       
       // Show session breakdown
       const activeSessions = allSessions.filter(s => s.revokedAt === null);
       const alreadyRevokedSessions = allSessions.filter(s => s.revokedAt !== null);
+      
+      // Update total revoked sessions count
+      setTotalRevokedSessions(alreadyRevokedSessions.length);
       
       addLog('info', `   • Active sessions: ${activeSessions.length}`);
       addLog('info', `   • Already revoked: ${alreadyRevokedSessions.length}`);
@@ -221,6 +278,8 @@ export const AutoRevokeSessions: FC = () => {
         if (success) {
           successCount++;
           setRevokedCount(successCount);
+          // Update total revoked count after successful revocation
+          setTotalRevokedSessions(prev => prev + 1);
         } else {
           failCount++;
         }
@@ -298,10 +357,33 @@ export const AutoRevokeSessions: FC = () => {
         {/* Current Session Info */}
         {sessionId && userId && (
           <div className="mb-4 p-3 bg-gray-800 border border-gray-600 rounded">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs text-gray-400">Current Session Status:</p>
+              {currentSessionStatus === 'active' && (
+                <span className="px-2 py-1 bg-green-600/20 text-green-400 text-xs font-semibold rounded border border-green-600/50">
+                  ✅ ACTIVE
+                </span>
+              )}
+              {currentSessionStatus === 'revoked' && (
+                <span className="px-2 py-1 bg-red-600/20 text-red-400 text-xs font-semibold rounded border border-red-600/50">
+                  ⚠️ REVOKED
+                </span>
+              )}
+              {currentSessionStatus === 'unknown' && (
+                <span className="px-2 py-1 bg-yellow-600/20 text-yellow-400 text-xs font-semibold rounded border border-yellow-600/50">
+                  ❓ UNKNOWN
+                </span>
+              )}
+            </div>
             <p className="text-xs text-gray-400 mb-1">Current Session ID:</p>
             <p className="text-xs text-white font-mono break-all">{sessionId}</p>
             <p className="text-xs text-gray-400 mt-2 mb-1">User ID:</p>
             <p className="text-xs text-white font-mono break-all">{userId}</p>
+            {currentSessionStatus === 'unknown' && (
+              <p className="text-xs text-yellow-400 mt-2">
+                💡 Click "Start Auto-Revoke Process" to check session status
+              </p>
+            )}
           </div>
         )}
 
@@ -321,18 +403,28 @@ export const AutoRevokeSessions: FC = () => {
         )}
 
         {/* Summary Stats */}
-        {(totalSessions > 0 || revokedCount > 0) && (
+        {totalSessions > 0 && (
           <div className="mb-4 p-3 bg-gray-800 border border-gray-600 rounded">
-            <div className="grid grid-cols-2 gap-4 text-center">
+            <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <p className="text-xs text-gray-400">Total Sessions</p>
                 <p className="text-lg font-semibold text-white">{totalSessions}</p>
               </div>
               <div>
+                <p className="text-xs text-gray-400">Active</p>
+                <p className="text-lg font-semibold text-blue-400">{totalSessions - totalRevokedSessions}</p>
+              </div>
+              <div>
                 <p className="text-xs text-gray-400">Revoked</p>
-                <p className="text-lg font-semibold text-green-400">{revokedCount}</p>
+                <p className="text-lg font-semibold text-green-400">{totalRevokedSessions}</p>
               </div>
             </div>
+            {revokedCount > 0 && (
+              <div className="mt-2 pt-2 border-t border-gray-700 text-center">
+                <p className="text-xs text-gray-400">Revoked in this run</p>
+                <p className="text-sm font-semibold text-blue-400">{revokedCount}</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -391,4 +483,5 @@ export const AutoRevokeSessions: FC = () => {
     </div>
   );
 };
+
 

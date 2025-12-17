@@ -1,15 +1,9 @@
 'use client';
 
 import { 
-  DynamicContextProvider, 
-  FilterChain,
-  SortWallets,
-  WalletOption,
-  Wallet
+  DynamicContextProvider
 } from '@dynamic-labs/sdk-react-core';
-import { SdkViewType, SdkViewSectionType } from '@dynamic-labs/sdk-api';
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
-import { ZeroDevSmartWalletConnectorsWithConfig } from '@dynamic-labs/ethereum-aa';
 
 import { Component, ReactNode } from 'react';
 // Error boundary for Dynamic SDK issues
@@ -43,12 +37,6 @@ class DynamicErrorBoundary extends Component<
 export function DynamicProvider({ children }: { children: React.ReactNode }) {
   // Environment configuration
   const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID || 'f180a93b-de32-4167-99e6-f44a59a82e80';
-  
-  // Configure number of wallets to display in wallet list (5-8 as requested)
-  // Can be overridden via environment variable
-  const numberOfWallets = process.env.NEXT_PUBLIC_NUMBER_OF_WALLETS 
-    ? parseInt(process.env.NEXT_PUBLIC_NUMBER_OF_WALLETS, 10) 
-    : 6; // Default to 6 (middle of 5-8 range)
   
   return (
     <DynamicErrorBoundary
