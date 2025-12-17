@@ -2,6 +2,12 @@
 
 import { FC, useState } from 'react';
 
+interface WalletData {
+  walletId?: string;
+  address?: string;
+  [key: string]: unknown;
+}
+
 interface RequestResult {
   id: number;
   status: 'pending' | 'success' | 'error';
@@ -10,6 +16,10 @@ interface RequestResult {
   error?: string;
   timestamp: Date;
 }
+
+const isWalletData = (data: unknown): data is WalletData => {
+  return typeof data === 'object' && data !== null;
+};
 
 export const PreGenWallets: FC = () => {
   const [identifier, setIdentifier] = useState('');
@@ -252,35 +262,40 @@ export const PreGenWallets: FC = () => {
                   <p className="text-yellow-200 text-sm">⏳ Pending...</p>
                 )}
 
-                {request.status === 'success' && request.data && (
-                  <div className="space-y-2">
-                    <p className="text-green-200 text-sm font-semibold">✅ Success</p>
-                    {request.data.walletId && (
-                      <div>
-                        <p className="text-xs text-gray-400 mb-1">Wallet ID</p>
-                        <p className="font-mono text-white text-xs break-all bg-gray-800/50 p-2 rounded">
-                          {request.data.walletId}
-                        </p>
+                {request.status === 'success' && request.data && isWalletData(request.data) ? (
+                  (() => {
+                    const walletData = request.data as WalletData;
+                    return (
+                      <div className="space-y-2">
+                        <p className="text-green-200 text-sm font-semibold">✅ Success</p>
+                        {walletData.walletId && (
+                          <div>
+                            <p className="text-xs text-gray-400 mb-1">Wallet ID</p>
+                            <p className="font-mono text-white text-xs break-all bg-gray-800/50 p-2 rounded">
+                              {walletData.walletId}
+                            </p>
+                          </div>
+                        )}
+                        {walletData.address && (
+                          <div>
+                            <p className="text-xs text-gray-400 mb-1">Address</p>
+                            <p className="font-mono text-white text-xs break-all bg-gray-800/50 p-2 rounded">
+                              {walletData.address}
+                            </p>
+                          </div>
+                        )}
+                        <details className="mt-2">
+                          <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-300">
+                            📋 Full Response
+                          </summary>
+                          <pre className="text-xs text-white overflow-x-auto mt-2 p-2 bg-gray-950 rounded">
+                            {JSON.stringify(walletData, null, 2)}
+                          </pre>
+                        </details>
                       </div>
-                    )}
-                    {request.data.address && (
-                      <div>
-                        <p className="text-xs text-gray-400 mb-1">Address</p>
-                        <p className="font-mono text-white text-xs break-all bg-gray-800/50 p-2 rounded">
-                          {request.data.address}
-                        </p>
-                      </div>
-                    )}
-                    <details className="mt-2">
-                      <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-300">
-                        📋 Full Response
-                      </summary>
-                      <pre className="text-xs text-white overflow-x-auto mt-2 p-2 bg-gray-950 rounded">
-                        {JSON.stringify(request.data, null, 2)}
-                      </pre>
-                    </details>
-                  </div>
-                )}
+                    );
+                  })()
+                ) : null}
 
                 {request.status === 'error' && (
                   <div>
