@@ -31,7 +31,7 @@ function getDisplayValue(value: unknown): string {
 }
 
 export function useWhyDidYouUpdate(name: string, props: Record<string, unknown>) {
-  const previousProps = useRef<Record<string, unknown>>();
+  const previousProps = useRef<Record<string, unknown> | undefined>(undefined);
 
   useEffect(() => {
     if (previousProps.current) {
