@@ -9,18 +9,18 @@ interface PackageVersion {
 }
 
 const DYNAMIC_PACKAGES: PackageVersion[] = [
-  { name: '@dynamic-labs/bitcoin', version: '4.47.1', description: 'Bitcoin wallet connector' },
-  { name: '@dynamic-labs/cosmos', version: '4.47.1', description: 'Cosmos wallet connector' },
-  { name: '@dynamic-labs/ethereum', version: '4.47.1', description: 'Ethereum (EVM) wallet connector' },
-  { name: '@dynamic-labs/ethereum-aa', version: '4.47.1', description: 'Ethereum Account Abstraction support' },
-  { name: '@dynamic-labs/iconic', version: '4.47.1', description: 'Icon components for UI' },
-  { name: '@dynamic-labs/sdk-api', version: '0.0.815', description: 'Dynamic SDK API client' },
-  { name: '@dynamic-labs/sdk-react-core', version: '4.47.1', description: 'Core React SDK package' },
-  { name: '@dynamic-labs/solana', version: '4.47.1', description: 'Solana wallet connector' },
-  { name: '@dynamic-labs/sui', version: '4.47.1', description: 'Sui wallet connector' },
-  { name: '@dynamic-labs/types', version: '4.47.1', description: 'TypeScript type definitions' },
-  { name: '@dynamic-labs/wagmi-connector', version: '4.47.1', description: 'Wagmi integration connector' },
-  { name: '@dynamic-labs/zerodev-extension', version: '4.47.1', description: 'ZeroDev account abstraction extension' },
+  { name: '@dynamic-labs/bitcoin', version: '4.48.1', description: 'Bitcoin wallet connector' },
+  { name: '@dynamic-labs/cosmos', version: '4.48.1', description: 'Cosmos wallet connector' },
+  { name: '@dynamic-labs/ethereum', version: '4.48.1', description: 'Ethereum (EVM) wallet connector' },
+  { name: '@dynamic-labs/ethereum-aa', version: '4.48.1', description: 'Ethereum Account Abstraction support' },
+  { name: '@dynamic-labs/iconic', version: '4.48.1', description: 'Icon components for UI' },
+  { name: '@dynamic-labs/sdk-api', version: '0.0.830', description: 'Dynamic SDK API client' },
+  { name: '@dynamic-labs/sdk-react-core', version: '4.48.1', description: 'Core React SDK package' },
+  { name: '@dynamic-labs/solana', version: '4.48.1', description: 'Solana wallet connector' },
+  { name: '@dynamic-labs/sui', version: '4.48.1', description: 'Sui wallet connector' },
+  { name: '@dynamic-labs/types', version: '4.48.1', description: 'TypeScript type definitions' },
+  { name: '@dynamic-labs/wagmi-connector', version: '4.48.1', description: 'Wagmi integration connector' },
+  { name: '@dynamic-labs/zerodev-extension', version: '4.48.1', description: 'ZeroDev account abstraction extension' },
 ];
 
 export const DynamicVersions: FC = () => {
@@ -44,7 +44,7 @@ export const DynamicVersions: FC = () => {
 
         {/* Core SDK Packages (v4.x.x) */}
         <div>
-          <h4 className="text-sm font-semibold text-white mb-2">Core SDK Packages (v4.47.1)</h4>
+          <h4 className="text-sm font-semibold text-white mb-2">Core SDK Packages (v4.48.1)</h4>
           <div className="space-y-2">
             {corePackages.map((pkg) => (
               <div
@@ -100,11 +100,11 @@ export const DynamicVersions: FC = () => {
             </div>
             <div>
               <p className="text-xs text-gray-400 mb-1">Core SDK Version</p>
-              <p className="text-lg font-semibold text-green-400">4.47.1</p>
+              <p className="text-lg font-semibold text-green-400">4.48.1</p>
             </div>
             <div>
               <p className="text-xs text-gray-400 mb-1">API Version</p>
-              <p className="text-lg font-semibold text-yellow-400">0.0.815</p>
+              <p className="text-lg font-semibold text-yellow-400">0.0.830</p>
             </div>
           </div>
         </div>
