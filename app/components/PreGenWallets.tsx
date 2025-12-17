@@ -6,7 +6,7 @@ interface RequestResult {
   id: number;
   status: 'pending' | 'success' | 'error';
   statusCode?: number;
-  data?: any;
+  data?: unknown;
   error?: string;
   timestamp: Date;
 }
@@ -122,7 +122,7 @@ export const PreGenWallets: FC = () => {
       <div className="space-y-4">
         <div className="p-3 bg-blue-900/30 border border-blue-500/50 rounded">
           <p className="text-xs text-blue-200 mb-2">
-            💡 <strong>Create wallets programmatically</strong> using Dynamic's WaaS API.
+            💡 <strong>Create wallets programmatically</strong> using Dynamic&apos;s WaaS API.
           </p>
           <p className="text-xs text-yellow-200">
             ⚠️ <strong>Note:</strong> This creates wallets server-side using your API key. The wallet will be associated with the provided identifier.

@@ -3,7 +3,7 @@
 import { FC, useState, useEffect } from 'react';
 import { useDynamicContext } from '@dynamic-labs/sdk-react-core';
 import { isZeroDevConnector } from '@dynamic-labs/ethereum-aa';
-import { getRoutes, getStepTransaction, ChainId } from '@lifi/sdk';
+import { getRoutes, getStepTransaction } from '@lifi/sdk';
 import { parseUnits, formatUnits, encodeFunctionData } from 'viem';
 
 // Token definitions for Ethereum Mainnet
@@ -286,7 +286,6 @@ export const LiFiSwapTest: FC = () => {
     }
   };
 
-  const selectedFromToken = MAINNET_TOKENS.find(t => t.address === fromToken);
   const selectedToToken = MAINNET_TOKENS.find(t => t.address === toToken);
 
   return (
