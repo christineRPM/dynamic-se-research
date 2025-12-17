@@ -36,7 +36,7 @@ All Dynamic packages upgraded to **v4.44.0**:
 ```typescript
 <DynamicContextProvider
   settings={{
-    environmentId: '423ea0e4-81a6-4fe2-ae90-5bd1ea3dfccd',
+    environmentId: 'f180a93b-de32-4167-99e6-f44a59a82e80',
     walletConnectors: [EthereumWalletConnectors, SuiWalletConnectors],
   }}
 >

@@ -3,25 +3,45 @@
 import { FC, useEffect, useState } from 'react';
 import { getAuthToken } from '@dynamic-labs/sdk-react-core';
 
+interface UserData {
+  user: {
+    id: string;
+    sessions: Array<{
+      id: string;
+      createdAt: string;
+      revokedAt: string | null;
+      ipAddress?: string;
+      userAgent?: string;
+    }>;
+    [key: string]: any;
+  };
+}
+
 export const JWTDisplay: FC = () => {
   const [jwt, setJwt] = useState<string | null>(null);
   const [localStorageJwt, setLocalStorageJwt] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
   const [revokingSession, setRevokingSession] = useState(false);
   const [revokeError, setRevokeError] = useState<string | null>(null);
   const [revokeSuccess, setRevokeSuccess] = useState(false);
+  const [fetchingUser, setFetchingUser] = useState(false);
+  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userError, setUserError] = useState<string | null>(null);
 
   useEffect(() => {
     // Get JWT from Dynamic SDK
     const token = getAuthToken();
     setJwt(token || null);
 
-    // Extract session ID from JWT
+    // Extract session ID and user ID from JWT
     if (token) {
       const decoded = decodeJWT(token);
       const sid = decoded?.sid || decoded?.session_id || decoded?.jti;
+      const uid = decoded?.sub || decoded?.user_id;
       setSessionId(sid || null);
+      setUserId(uid || null);
     }
 
     // Try to get the Dynamic authentication token from localStorage
@@ -90,6 +110,11 @@ export const JWTDisplay: FC = () => {
 
       setRevokeSuccess(true);
       setTimeout(() => setRevokeSuccess(false), 5000);
+      
+      // Refresh user data to see updated sessions
+      if (userId) {
+        handleGetUser();
+      }
     } catch (error) {
       if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
         setRevokeError('Network error - CORS may be blocking the request');
@@ -98,6 +123,33 @@ export const JWTDisplay: FC = () => {
       }
     } finally {
       setRevokingSession(false);
+    }
+  };
+
+  const handleGetUser = async () => {
+    if (!userId) {
+      setUserError('No user ID found in JWT');
+      return;
+    }
+
+    setFetchingUser(true);
+    setUserError(null);
+    setUserData(null);
+
+    try {
+      const response = await fetch(`/api/get-user?userId=${userId}`);
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || data.message || `Failed to get user (${response.status})`);
+      }
+
+      setUserData(data);
+    } catch (error) {
+      setUserError(error instanceof Error ? error.message : 'Failed to fetch user');
+    } finally {
+      setFetchingUser(false);
     }
   };
 
@@ -233,12 +285,156 @@ export const JWTDisplay: FC = () => {
     );
   };
 
-  return (
-    <div className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4">
-      <h3 className="text-lg font-semibold text-white mb-3">JWT Token & Session Management</h3>
+  // Compare current session with revoked sessions
+  const currentSessionStatus = userData?.user?.sessions?.find(s => s.id === sessionId);
+  const revokedSessions = userData?.user?.sessions?.filter(s => s.revokedAt !== null) || [];
+  const isCurrentSessionRevoked = currentSessionStatus?.revokedAt !== null;
 
-      {!jwt && !localStorageJwt && (
-        <p className="text-gray-400 text-sm">No JWT token found. Please authenticate first.</p>
+  return (
+    <div className="space-y-4">
+      <div className="bg-gray-700/50 border border-gray-600/50 rounded-lg p-4">
+        <h3 className="text-lg font-semibold text-white mb-3">JWT Token & Session Management</h3>
+
+        {/* How JWT is Obtained */}
+        <div className="mb-4 p-4 bg-blue-900/30 border border-blue-500/50 rounded-lg">
+          <h4 className="text-sm font-semibold text-blue-200 mb-2">📖 How JWT is Obtained</h4>
+          <div className="space-y-2 text-xs text-blue-100">
+            <p>
+              <strong>1. Client-Side:</strong> The JWT is obtained using Dynamic SDK's <code className="bg-blue-950 px-1 rounded">getAuthToken()</code> function.
+            </p>
+            <p>
+              <strong>2. Source:</strong> The SDK retrieves the JWT from Dynamic's authentication service after successful wallet connection or social login.
+            </p>
+            <p>
+              <strong>3. Storage:</strong> The JWT is stored in the browser's memory and can also be found in localStorage under <code className="bg-blue-950 px-1 rounded">dynamic_authentication_token</code>.
+            </p>
+            <p>
+              <strong>4. Contents:</strong> The JWT contains user information, session ID, environment ID, and expiration time. It's signed by Dynamic's servers and can be verified using their JWKS endpoint.
+            </p>
+            <p>
+              <strong>5. Usage:</strong> This JWT is used to authenticate API requests and identify the current user session.
+            </p>
+          </div>
+        </div>
+
+        {!jwt && !localStorageJwt && (
+          <p className="text-gray-400 text-sm">No JWT token found. Please authenticate first.</p>
+        )}
+
+      {/* User Lookup Section */}
+      {userId && (
+        <div className="mb-4 p-4 bg-gray-800 border border-gray-600 rounded-lg">
+          <h4 className="text-sm font-semibold text-white mb-2">👤 User Lookup & Session Comparison</h4>
+          
+          <div className="mb-3 p-2 bg-blue-900/30 border border-blue-500/50 rounded">
+            <p className="text-xs text-blue-200 mb-1">
+              💡 <strong>Get User by ID:</strong> Fetch user data including all sessions to compare revoked sessions with current session.
+            </p>
+            <p className="text-xs text-blue-300">
+              📚 <a href="https://www.dynamic.xyz/docs/api-reference/users/get-a-user-by-id" target="_blank" className="underline">API Reference</a>
+            </p>
+          </div>
+
+          <div className="mb-3">
+            <p className="text-xs text-gray-400 mb-1">User ID (from JWT):</p>
+            <p className="text-xs text-white font-mono break-all bg-gray-900 p-2 rounded">{userId}</p>
+          </div>
+
+          <button
+            onClick={handleGetUser}
+            disabled={fetchingUser || !userId}
+            className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 disabled:cursor-not-allowed text-white text-sm rounded transition-colors font-semibold mb-3"
+          >
+            {fetchingUser ? '⏳ Fetching User...' : '🔍 Get User Data'}
+          </button>
+
+          {userError && (
+            <div className="mb-3 p-2 bg-red-900/50 border border-red-700 rounded text-red-200 text-xs">
+              ❌ {userError}
+            </div>
+          )}
+
+          {userData && (
+            <div className="mt-4 space-y-3">
+              {/* Current Session Status */}
+              {currentSessionStatus && (
+                <div className={`p-3 rounded-lg border ${
+                  isCurrentSessionRevoked
+                    ? 'bg-red-900/30 border-red-600/50'
+                    : 'bg-green-900/30 border-green-600/50'
+                }`}>
+                  <div className="flex items-center justify-between mb-2">
+                    <h5 className="text-sm font-semibold text-white">Current Session Status</h5>
+                    {isCurrentSessionRevoked ? (
+                      <span className="px-2 py-1 bg-red-600 text-white text-xs rounded">REVOKED</span>
+                    ) : (
+                      <span className="px-2 py-1 bg-green-600 text-white text-xs rounded">ACTIVE</span>
+                    )}
+                  </div>
+                  <div className="text-xs space-y-1">
+                    <p className="text-gray-300">
+                      <strong>Session ID:</strong> <span className="font-mono">{currentSessionStatus.id}</span>
+                    </p>
+                    <p className="text-gray-300">
+                      <strong>Created:</strong> {new Date(currentSessionStatus.createdAt).toLocaleString()}
+                    </p>
+                    {currentSessionStatus.revokedAt && (
+                      <p className="text-red-300">
+                        <strong>Revoked:</strong> {new Date(currentSessionStatus.revokedAt).toLocaleString()}
+                      </p>
+                    )}
+                    {currentSessionStatus.ipAddress && (
+                      <p className="text-gray-300">
+                        <strong>IP:</strong> {currentSessionStatus.ipAddress}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Revoked Sessions Comparison */}
+              {revokedSessions.length > 0 && (
+                <div className="p-3 bg-yellow-900/30 border border-yellow-600/50 rounded-lg">
+                  <h5 className="text-sm font-semibold text-yellow-200 mb-2">
+                    🔒 Revoked Sessions ({revokedSessions.length})
+                  </h5>
+                  <div className="space-y-2 max-h-48 overflow-y-auto">
+                    {revokedSessions.map((session) => (
+                      <div
+                        key={session.id}
+                        className={`p-2 rounded text-xs ${
+                          session.id === sessionId
+                            ? 'bg-red-900/50 border border-red-600'
+                            : 'bg-gray-900/50 border border-gray-700'
+                        }`}
+                      >
+                        <div className="flex items-center justify-between">
+                          <span className="font-mono text-white">{session.id.substring(0, 20)}...</span>
+                          {session.id === sessionId && (
+                            <span className="px-1.5 py-0.5 bg-red-600 text-white text-xs rounded">CURRENT</span>
+                          )}
+                        </div>
+                        <p className="text-gray-400 mt-1">
+                          Revoked: {new Date(session.revokedAt!).toLocaleString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Full User Data */}
+              <details className="mt-2">
+                <summary className="text-xs text-gray-400 cursor-pointer hover:text-gray-300">
+                  📋 Full User Data (Click to expand)
+                </summary>
+                <pre className="text-xs text-white overflow-x-auto mt-2 p-2 bg-gray-950 rounded max-h-96 overflow-y-auto">
+                  {JSON.stringify(userData, null, 2)}
+                </pre>
+              </details>
+            </div>
+          )}
+        </div>
       )}
 
       {/* Session Revocation Controls */}
@@ -287,36 +483,37 @@ export const JWTDisplay: FC = () => {
         </div>
       )}
 
-      {jwt && renderJWTInfo(jwt, '🔐 Dynamic SDK Token (getAuthToken)')}
-      
-      {localStorageJwt && localStorageJwt !== jwt && renderJWTInfo(localStorageJwt, '💾 LocalStorage Token')}
+        {jwt && renderJWTInfo(jwt, '🔐 Dynamic SDK Token (getAuthToken)')}
+        
+        {localStorageJwt && localStorageJwt !== jwt && renderJWTInfo(localStorageJwt, '💾 LocalStorage Token')}
 
-      {/* Show all localStorage keys for debugging */}
-      <details className="mt-4">
-        <summary className="text-sm text-gray-400 cursor-pointer hover:text-gray-300">
-          🔍 Debug: All Dynamic localStorage Keys
-        </summary>
-        <div className="mt-2 bg-gray-900 rounded p-3">
-          <pre className="text-xs text-white overflow-x-auto">
-            {typeof window !== 'undefined' && 
-              JSON.stringify(
-                Object.keys(localStorage)
-                  .filter(key => 
-                    key.includes('dynamic') || 
-                    key.includes('auth') || 
-                    key.includes('token')
-                  )
-                  .reduce((acc, key) => {
-                    acc[key] = localStorage.getItem(key);
-                    return acc;
-                  }, {} as Record<string, string | null>),
-                null,
-                2
-              )
-            }
-          </pre>
-        </div>
-      </details>
+        {/* Show all localStorage keys for debugging */}
+        <details className="mt-4">
+          <summary className="text-sm text-gray-400 cursor-pointer hover:text-gray-300">
+            🔍 Debug: All Dynamic localStorage Keys
+          </summary>
+          <div className="mt-2 bg-gray-900 rounded p-3">
+            <pre className="text-xs text-white overflow-x-auto">
+              {typeof window !== 'undefined' && 
+                JSON.stringify(
+                  Object.keys(localStorage)
+                    .filter(key => 
+                      key.includes('dynamic') || 
+                      key.includes('auth') || 
+                      key.includes('token')
+                    )
+                    .reduce((acc, key) => {
+                      acc[key] = localStorage.getItem(key);
+                      return acc;
+                    }, {} as Record<string, string | null>),
+                  null,
+                  2
+                )
+              }
+            </pre>
+          </div>
+        </details>
+      </div>
     </div>
   );
 };

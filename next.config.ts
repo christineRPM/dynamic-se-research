@@ -54,20 +54,8 @@ const nextConfig: NextConfig = {
   ],
 
   // Content Security Policy for Dynamic embedded wallets
-  async headers() {
-    return [
-      {
-        // Apply CSP to all routes
-        source: '/(.*)',
-        headers: [
-          {
-            key: 'Content-Security-Policy',
-            value: "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
-          }
-        ]
-      }
-    ];
-  },
+  // Note: CSP is handled by middleware.ts which properly excludes bundle files
+  // We don't set CSP here to avoid conflicts with bundle file loading
 };
 
 export default nextConfig;

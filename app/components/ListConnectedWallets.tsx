@@ -1,13 +1,12 @@
 'use client';
 
 import { FC, useEffect, useState } from 'react';
-import { useUserWallets, useDynamicContext } from '@dynamic-labs/sdk-react-core';
+import { useUserWallets, getAuthToken } from '@dynamic-labs/sdk-react-core';
 import { useRenderCount } from '../hooks/useRenderCount';
 import { useWhyDidYouUpdate } from '../hooks/useWhyDidYouUpdate';
 
 export const ListConnectedWallets: FC = () => {
   const userWallets = useUserWallets();
-  const { authToken } = useDynamicContext();
   const [unlinkingWalletId, setUnlinkingWalletId] = useState<string | null>(null);
   const [unlinkError, setUnlinkError] = useState<string | null>(null);
   
@@ -40,20 +39,33 @@ export const ListConnectedWallets: FC = () => {
     setUnlinkingWalletId(walletId);
     setUnlinkError(null);
 
-    // Fallback to hardcoded token if authToken is not available
-    const token = authToken || 'dyn_B1UpvOop4jQ9ndmlfO8EehpVKcYnlcynP0QtpTkOtox7RCEjNq1QifYq';
-    const environmentId = '423ea0e4-81a6-4fe2-ae90-5bd1ea3dfccd';
+    // Get auth token from Dynamic
+    const authToken = getAuthToken();
+    const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID;
 
-    console.log('🔐 Using token:', token ? `${token.substring(0, 20)}...` : 'No token');
+    if (!authToken) {
+      setUnlinkError('No authentication token available');
+      setUnlinkingWalletId(null);
+      return;
+    }
+
+    if (!environmentId) {
+      setUnlinkError('Environment ID not configured');
+      setUnlinkingWalletId(null);
+      return;
+    }
+
+    console.log('🔐 Using token:', authToken ? `${authToken.substring(0, 20)}...` : 'No token');
     console.log('🆔 Wallet ID:', walletId);
+    console.log('🌍 Environment ID:', environmentId);
 
     try {
       const response = await fetch(
-        `https://app.dynamicauth.com/api/v0/sdk/${environmentId}/verify/unlink`,
+        `https://app.dynamic.xyz/api/v0/sdk/${environmentId}/verify/unlink`,
         {
           method: 'POST',
           headers: {
-            'Authorization': `Bearer ${token}`,
+            'Authorization': `Bearer ${authToken}`,
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
@@ -74,6 +86,9 @@ export const ListConnectedWallets: FC = () => {
       }
 
       console.log('✅ Wallet unlinked successfully:', data);
+      
+      // Optionally refresh the wallet list by triggering a re-render
+      // The useUserWallets hook should automatically update
     } catch (error) {
       console.error('❌ Error unlinking wallet:', error);
       setUnlinkError(error instanceof Error ? error.message : 'Failed to unlink wallet');

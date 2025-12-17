@@ -6,10 +6,13 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next();
 
   // Add Content Security Policy header for Dynamic embedded wallets
-  response.headers.set(
-    'Content-Security-Policy',
-    "default-src * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src * 'unsafe-inline' 'unsafe-eval'; connect-src * 'unsafe-inline'; img-src * data: blob: 'unsafe-inline'; frame-src *; style-src * 'unsafe-inline';"
-  );
+  // Skip CSP for Next.js bundle files
+  if (!request.nextUrl.pathname.match(/\.bundle\.js$|^\/_next\//)) {
+    response.headers.set(
+      'Content-Security-Policy',
+      "default-src 'self' * 'unsafe-inline' 'unsafe-eval' data: blob:; script-src 'self' * 'unsafe-inline' 'unsafe-eval' blob: data:; connect-src 'self' * 'unsafe-inline'; img-src 'self' * data: blob: 'unsafe-inline'; frame-src 'self' *; style-src 'self' * 'unsafe-inline'; worker-src 'self' * blob: data: 'unsafe-inline' 'unsafe-eval'; child-src 'self' * blob: data:;"
+    );
+  }
 
   return response;
 }
@@ -24,6 +27,6 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/((?!api|_next|.*\\.bundle\\.js|favicon.ico).*)',
   ],
 }; 
