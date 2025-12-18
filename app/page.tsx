@@ -1,7 +1,9 @@
 'use client';
 
-import { useState } from 'react';
-import { DynamicEmbeddedWidget, useDynamicContext, useIsLoggedIn } from '@dynamic-labs/sdk-react-core';
+import { useState, useEffect } from 'react';
+import { DynamicEmbeddedWidget, useDynamicContext, useIsLoggedIn, useIsMfaRequiredForAction, usePromptMfaAuth } from '@dynamic-labs/sdk-react-core';
+import { MFAAction } from '@dynamic-labs/sdk-api-core';
+import { parseEther } from 'viem';
 import { ListConnectedWallets } from './components/ListConnectedWallets';
 import { JWTDisplay } from './components/JWTDisplay';
 import { GasSponsorshipTest } from './components/GasSponsorshipTest';
@@ -9,16 +11,96 @@ import { LiFiSwapTest } from './components/LiFiSwapTest';
 import { PreGenWallets } from './components/PreGenWallets';
 import { DynamicVersions } from './components/DynamicVersions';
 import { AutoRevokeSessions } from './components/AutoRevokeSessions';
+import { ExternalAuth } from './components/ExternalAuth';
+import { ClerkAuthToggle } from './components/ClerkAuthToggle';
+import { ClerkAutoSignIn } from './components/ClerkAutoSignIn';
 import UserProfileSocialAccount from './components/UserProfileSocialAccount';
 import UserProfileSocialAccountOptimized from './components/UserProfileSocialAccountOptimized';
+import { ContextDebug } from './components/ContextDebug';
 
-type TabId = 'auto-revoke' | 'user-info' | 'gas-sponsorship' | 'pre-gen-wallets' | 'api-testing' | 'dynamic-version';
+type TabId = 'external-auth' | 'auto-revoke' | 'user-info' | 'gas-sponsorship' | 'pre-gen-wallets' | 'api-testing' | 'dynamic-version';
 
 export default function Home() {
-  const { user, primaryWallet } = useDynamicContext();
+  const dynamicContext = useDynamicContext();
+  const { user, primaryWallet } = dynamicContext;
   const isAuthenticated = useIsLoggedIn();
   const address = primaryWallet?.address;
-  const [activeTab, setActiveTab] = useState<TabId>('auto-revoke');
+  const [activeTab, setActiveTab] = useState<TabId>('external-auth');
+  const [widgetKey, setWidgetKey] = useState<string>(user?.userId || 'default');
+  const isMfaRequiredForAction = useIsMfaRequiredForAction();
+  const promptMfaAuth = usePromptMfaAuth();
+  const [sendingTransaction, setSendingTransaction] = useState(false);
+
+  // Debug: Log context instance to verify it's the same
+  if (typeof window !== 'undefined') {
+    (window as any).__dynamicContextDebug = dynamicContext;
+  }
+
+  // Force widget remount when user changes (to pick up new MFA tokens)
+  useEffect(() => {
+    if (user?.userId && widgetKey !== user.userId) {
+      setWidgetKey(user.userId);
+    }
+  }, [user?.userId, widgetKey]);
+
+  // Listen for MFA token creation events and refresh widget
+  useEffect(() => {
+    const handleMfaTokenCreated = () => {
+      // Force widget remount by changing key
+      setWidgetKey(prev => prev + '-refresh');
+      console.log('🔄 Widget refreshed due to MFA token creation');
+    };
+
+    window.addEventListener('mfa-token-created', handleMfaTokenCreated);
+    return () => window.removeEventListener('mfa-token-created', handleMfaTokenCreated);
+  }, []);
+
+  // Handle sending a transaction directly from primaryWallet
+  const handleSendTransaction = async () => {
+    if (!primaryWallet) {
+      alert('No primary wallet available');
+      return;
+    }
+
+    setSendingTransaction(true);
+
+    try {
+      // Step 1: Check if MFA is required for signing actions
+      const isMfaRequired = await isMfaRequiredForAction({
+        mfaAction: MFAAction.WalletWaasSign,
+      });
+
+      // Step 2: If MFA is required, prompt for MFA authentication first
+      if (isMfaRequired) {
+        await promptMfaAuth({ createMfaToken: true });
+        // Wait a moment for token to be stored
+        await new Promise(resolve => setTimeout(resolve, 500));
+      }
+
+      // Step 3: Send transaction directly from primaryWallet using sendBalance
+      const recipientAddress = '0xFf70E6991834768DF8E61DB3391B2de48a241791'; // Example recipient
+      const amount = '0.001'; // Amount in ETH
+
+      // Use primaryWallet.sendBalance method
+      const transaction = await primaryWallet.sendBalance({
+        toAddress: recipientAddress,
+        amount: amount, // Amount as string in ETH
+      });
+
+      console.log('Transaction sent!', transaction);
+      // Transaction can be a string (hash) or an object
+      const txHash = typeof transaction === 'string' ? transaction : (transaction as any)?.hash || 'See console for details';
+      alert(`Transaction sent! Hash: ${txHash}`);
+    } catch (error) {
+      console.error('Send transaction error:', error);
+      // Don't show alert for user cancellation
+      if (error instanceof Error && !error.message.includes('User rejected') && !error.message.includes('cancelled')) {
+        alert(`Transaction failed: ${error.message}`);
+      }
+    } finally {
+      setSendingTransaction(false);
+    }
+  };
 
   return (
     <div className="h-screen flex flex-col bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
@@ -32,16 +114,35 @@ export default function Home() {
       </header>
 
       <main className="flex-1 min-h-0 overflow-hidden">
+        {/* Auto-sign in component - always mounted */}
+        <ClerkAutoSignIn />
+        {/* Debug component to verify context */}
+        <ContextDebug />
         <div className="h-full grid grid-cols-1 lg:grid-cols-3 overflow-hidden">
           {/* Embedded Widget */}
           <div className="bg-gray-800 border-r border-gray-700 flex flex-col h-full overflow-hidden lg:col-span-1">
-            <div className="flex-shrink-0 px-6 pt-6 pb-4 border-b border-gray-700">
+            <div className="flex-shrink-0 px-6 pt-6 pb-4 border-b border-gray-700 flex items-center justify-between">
               <h2 className="text-xl font-semibold text-white">Your Wallet</h2>
+              <ClerkAuthToggle />
             </div>
             <div className="flex-1 p-6 overflow-hidden">
               <DynamicEmbeddedWidget 
                 background="default"
+                key={widgetKey} // Force remount when user changes or token is created
               />
+              
+              {/* Test Transaction Button */}
+              {isAuthenticated && (
+                <div className="mt-4">
+                  <button
+                    onClick={handleSendTransaction}
+                    disabled={!primaryWallet || sendingTransaction}
+                    className="w-full px-4 py-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded transition-colors font-semibold"
+                  >
+                    {sendingTransaction ? 'Sending...' : 'Send Transaction (0.001 ETH)'}
+                  </button>
+                </div>
+              )}
             </div>
           </div>
 
@@ -62,6 +163,16 @@ export default function Home() {
                   
                   {/* Tabs */}
                   <div className="flex gap-1 -mb-px">
+                    <button
+                      onClick={() => setActiveTab('external-auth')}
+                      className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
+                        activeTab === 'external-auth'
+                          ? 'border-purple-500 text-purple-400'
+                          : 'border-transparent text-gray-400 hover:text-gray-300 hover:border-gray-600'
+                      }`}
+                    >
+                      🔗 External Auth
+                    </button>
                     <button
                       onClick={() => setActiveTab('auto-revoke')}
                       className={`px-4 py-2 text-sm font-medium transition-colors border-b-2 ${
@@ -189,6 +300,11 @@ export default function Home() {
                     {/* Dynamic Version Tab */}
                     {activeTab === 'dynamic-version' && (
                       <DynamicVersions />
+                    )}
+
+                    {/* External Auth Tab */}
+                    {activeTab === 'external-auth' && (
+                      <ExternalAuth />
                     )}
                   </div>
                 </div>
