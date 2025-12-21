@@ -73,8 +73,6 @@ export default function Home() {
       // Step 2: If MFA is required, prompt for MFA authentication first
       if (isMfaRequired) {
         await promptMfaAuth({ createMfaToken: true });
-        // Wait a moment for token to be stored
-        await new Promise(resolve => setTimeout(resolve, 500));
       }
 
       // Step 3: Send transaction directly from primaryWallet using sendBalance
@@ -84,7 +82,7 @@ export default function Home() {
       // Use primaryWallet.sendBalance method
       const transaction = await primaryWallet.sendBalance({
         toAddress: recipientAddress,
-        amount: amount, // Amount as string in ETH
+        amount: amount,
       });
 
       console.log('Transaction sent!', transaction);

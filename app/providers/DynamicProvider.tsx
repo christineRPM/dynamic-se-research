@@ -60,9 +60,18 @@ export function DynamicProvider({ children }: { children: React.ReactNode }) {
         theme="dark"
         settings={{
           environmentId: environmentId,
+          initialAuthenticationMode: 'connect-and-sign',
           walletConnectors: [
             EthereumWalletConnectors
           ],
+          events: {
+            onSignedMessage: ({ messageToSign, signedMessage }) => {
+              console.log('🔐 [DynamicProvider] onSignedMessage event fired!');
+              console.log('   Message to sign:', messageToSign);
+              console.log('   Signed message (signature):', signedMessage);
+              console.log('   Full event data:', { messageToSign, signedMessage });
+            },
+          },
         }}
       >
         {children}
