@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { DynamicProvider } from './providers/DynamicProvider';
+import { DynamicProviderWrapper } from './providers/DynamicProviderWrapper';
 
 export const metadata: Metadata = {
   title: "Dynamic Enterprise Demo | USDC Wallet Integration",
@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased bg-gray-50" suppressHydrationWarning>
-        <DynamicProvider>
+        <DynamicProviderWrapper>
           {children}
-        </DynamicProvider>
+        </DynamicProviderWrapper>
       </body>
     </html>
   );

@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify({
         identifier,
         type,
-        chains: chains || ['EVM'],
+        chains: chains || ['EVM','EVM'],
       }),
     });
 

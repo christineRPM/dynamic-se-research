@@ -3,9 +3,13 @@
 import { 
   DynamicContextProvider
 } from '@dynamic-labs/sdk-react-core';
+import { SdkViewSectionType, SdkViewType } from "@dynamic-labs/sdk-api";
 import { EthereumWalletConnectors } from '@dynamic-labs/ethereum';
+import { SolanaWalletConnectors } from '@dynamic-labs/solana';
+import { TonWalletConnectors } from '@dynamic-labs/ton';
 
 import { Component, ReactNode } from 'react';
+import { ZeroDevSmartWalletConnectors } from '@dynamic-labs/ethereum-aa';
 // Error boundary for Dynamic SDK issues
 class DynamicErrorBoundary extends Component<
   { children: ReactNode; fallback: ReactNode },
@@ -34,10 +38,8 @@ class DynamicErrorBoundary extends Component<
   }
 }
 
+
 export function DynamicProvider({ children }: { children: React.ReactNode }) {
-  // Environment configuration
-  const environmentId = process.env.NEXT_PUBLIC_DYNAMIC_ENVIRONMENT_ID || 'f180a93b-de32-4167-99e6-f44a59a82e80';
-  
   return (
     <DynamicErrorBoundary
       fallback={
@@ -59,10 +61,23 @@ export function DynamicProvider({ children }: { children: React.ReactNode }) {
       <DynamicContextProvider
         theme="dark"
         settings={{
-          environmentId: environmentId,
+          environmentId: "91ead9d6-45fb-4fab-946b-c93736d38c46",
+          initialAuthenticationMode: 'connect-and-sign',
           walletConnectors: [
-            EthereumWalletConnectors
+            EthereumWalletConnectors,
+            SolanaWalletConnectors,
+            TonWalletConnectors,
           ],
+          appName: 'Dynamic SE Research',
+        }}
+        locale={{
+          en: {
+            dyn_login: {
+              title: {
+                all: 'Log in',
+              },
+            },
+          },
         }}
       >
         {children}

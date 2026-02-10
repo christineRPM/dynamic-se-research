@@ -53,6 +53,11 @@ const nextConfig: NextConfig = {
     '@dynamic-labs/wagmi-connector',
   ],
 
+  serverExternalPackages: [
+    "@dynamic-labs-wallet/node",
+    "@dynamic-labs-wallet/node-evm",
+  ],
+
   // Content Security Policy for Dynamic embedded wallets
   // Note: CSP is handled by middleware.ts which properly excludes bundle files
   // We don't set CSP here to avoid conflicts with bundle file loading
